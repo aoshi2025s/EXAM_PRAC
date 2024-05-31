@@ -17,7 +17,7 @@ void    put_digit(long long int number, int base, int *length)
 
     if (number < 0)
     {
-        number *= =1;
+        number *= -1;
         *length += write(1, "-", 1);
     }
     if (number >= base)
@@ -34,7 +34,7 @@ int ft_printf(const char *format, ...)
 
     while (*format)
     {
-        if ((*format == '%') && ((*(format + 1) == 's') || (*(format + 1) == 'd') || (*(format + 1) == 'x')))
+        if (*format == '%')
         {
             format++;
             if (*format == 's')
@@ -43,6 +43,8 @@ int ft_printf(const char *format, ...)
                 put_digit((long long int)va_arg(pointer, int), 10, &length);
             else if (*format == 'x')
                 put_digit((long long int)va_arg(pointer, unsigned int), 16, &length);
+            else
+                return (va_end(pointer), -1);
         }
         else
             length += write(1, format, 1);
@@ -50,3 +52,47 @@ int ft_printf(const char *format, ...)
     }
     return (va_end(pointer), length);
 }
+/*
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void)
+{
+    char *str = "Hello, World!";
+    char *str_null = NULL;
+
+    int result;
+    int expected;
+
+    result = ft_printf("%s\n",str);
+    expected = printf("%s\n", str);
+    if (result == expected)
+        printf("%%s test passed\n");
+    else
+        printf("%%s test failed\n");
+    
+    result = ft_printf("%s\n",str_null);
+    expected = printf("%s\n", str_null);
+    if (result == expected)
+        printf("%%s test passed\n");
+    else
+        printf("%%s test failed\n");
+
+
+    int d = -214345868;
+    result = ft_printf("%d\n", d);
+    expected = printf("%d\n", d);
+    if (result == expected)
+        printf("%%s test passed\n");
+    else
+        printf("%%s test failed\n");
+
+    int hex = 42;
+    result = ft_printf("%x\n", hex);
+    expected = printf("%x\n", hex);
+    if (result == expected)
+        printf("%%s test passed\n");
+    else
+        printf("%%s test failed\n");
+}
+*/
