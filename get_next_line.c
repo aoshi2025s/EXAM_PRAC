@@ -49,30 +49,24 @@ char *ft_memcpy(void *dest, void *src, size_t len)
 {
 	unsigned char *d = (unsigned char *)dest;
 	unsigned char *s = (unsigned char *)src;
-	while (len)
-	{
+	while (len--)
 		*d++ = *s++;
-		len--;
-	}
 	return ((char *)dest);
 }
 
-int ft_putc(t_line *line, char c)
+void ft_putc(t_line *line, char c)
 {
 	char  *new_str;
-	char *delete_str;
+
 	if (line->len + 1 > line->capa)
 	{
+		line->capa = (line->len + 1) * 2;
 		new_str = (char *)malloc(sizeof(char) * ((line->len + 1) * 2));
 		ft_memcpy(new_str, line->str, line->len);
-		delete_str = line->str;
+		free (line->str);
 		line->str = new_str;
-		free (delete_str);
-		line->capa = (line->len + 1) * 2;
 	}
-	line->str[line->len] = c;
-	line->len++;
-	return (1);
+	line->str[line->len++] = c;
 }
 
 char *get_next_line(int fd)
@@ -80,13 +74,9 @@ char *get_next_line(int fd)
 	char c;
 	t_line line;
 
-	line.str = (void *)0;
+	line.str = 0;
 	line.len = 0;
 	line.capa = 0;
-
-
-	if (fd < 0 || BUFFER_SIZE < 0) 
-		return ((void *)0);
 	while (1)
 	{
 		c = ft_getc(fd);
@@ -101,13 +91,13 @@ char *get_next_line(int fd)
 	return (line.str);
 }
 
-/*
+
 #include <fcntl.h>
 #include <stdio.h>
 int main(void)
 {
 	char *line;
-	int fd = open("test.txt", O_RDONLY);
+	int fd = open("ft_printf.c", O_RDONLY);
 	while (1)
 	{
 		line = get_next_line(fd);
@@ -119,4 +109,4 @@ int main(void)
 	close(fd);
 	return (0);
 }
-*/
+
