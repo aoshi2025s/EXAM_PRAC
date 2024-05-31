@@ -3,96 +3,95 @@
 #include <unistd.h>
 #include <stdarg.h>
 
-void    put_string(char *string, int *length)
+void    put_string(char *str, int *len)
 {
-    if (!string)
-        string = "(null)";
-    while (*string)
-        *length += write(1, string++, 1);
+    if (!str)
+        str = "(null)";
+    while (*str)
+        *len += write(1, str++, 1);
 }
 
-void    put_digit(long long int number, int base, int *length)
+void    put_digit(long long int num, int base, int *len)
 {
-    char *hexademical = "0123456789abcdef";
+    char *hex = "0123456789abcdef";
 
-    if (number < 0)
+    if (num < 0)
     {
-        number *= -1;
-        *length += write(1, "-", 1);
+        num *= -1;
+        *len += write(1, "-", 1);
     }
-    if (number >= base)
-        put_digit((number / base), base, length);
-    *length += write(1, &hexademical[number % base], 1);
+    if (num >= base)
+        put_digit((num / base), base, len);
+    *len += write(1, &hex[num % base], 1);
 }
 
-int ft_printf(const char *format, ...)
+int ft_printf(const char *fmt, ...)
 {
-    int length = 0;
+    int len = 0;
 
-    va_list pointer;
-    va_start(pointer, format);
+    va_list ptr;
+    va_start(ptr, fmt);
 
-    while (*format)
+    while (*fmt)
     {
-        if (*format == '%')
+        if (*fmt == '%')
         {
-            format++;
-            if (*format == 's')
-                put_string(va_arg(pointer, char *), &length);
-            else if (*format == 'd')
-                put_digit((long long int)va_arg(pointer, int), 10, &length);
-            else if (*format == 'x')
-                put_digit((long long int)va_arg(pointer, unsigned int), 16, &length);
+            fmt++;
+            if (*fmt == 's')
+                put_string(va_arg(ptr, char *), &len);
+            else if (*fmt == 'd')
+                put_digit((long long int)va_arg(ptr, int), 10, &len);
+            else if (*fmt == 'x')
+                put_digit((long long int)va_arg(ptr, unsigned int), 16, &len);
             else
-                return (va_end(pointer), -1);
+                return (va_end(ptr), -1);
         }
         else
-            length += write(1, format, 1);
-        format++;
+            len += write(1, fmt, 1);
+        fmt++;
     }
-    return (va_end(pointer), length);
+    return (va_end(ptr), len);
 }
-/*
-#include <stdio.h>
-#include <stdlib.h>
 
-int main(void)
-{
-    char *str = "Hello, World!";
-    char *str_null = NULL;
+// #include <stdio.h>
+// #include <stdlib.h>
 
-    int result;
-    int expected;
+// int main(void)
+// {
+//     char *str = "Hello, World!";
+//     char *str_null = NULL;
 
-    result = ft_printf("%s\n",str);
-    expected = printf("%s\n", str);
-    if (result == expected)
-        printf("%%s test passed\n");
-    else
-        printf("%%s test failed\n");
+//     int result;
+//     int expected;
+
+//     result = ft_printf("%s\n",str);
+//     expected = printf("%s\n", str);
+//     if (result == expected)
+//         printf("%%s test passed\n");
+//     else
+//         printf("%%s test failed\n");
     
-    result = ft_printf("%s\n",str_null);
-    expected = printf("%s\n", str_null);
-    if (result == expected)
-        printf("%%s test passed\n");
-    else
-        printf("%%s test failed\n");
+//     result = ft_printf("%s\n",str_null);
+//     expected = printf("%s\n", str_null);
+//     if (result == expected)
+//         printf("%%s test passed\n");
+//     else
+//         printf("%%s test failed\n");
 
 
-    int d = -214345868;
-    result = ft_printf("%d\n", d);
-    expected = printf("%d\n", d);
-    if (result == expected)
-        printf("%%s test passed\n");
-    else
-        printf("%%s test failed\n");
+//     int d = -214345868;
+//     result = ft_printf("%d\n", d);
+//     expected = printf("%d\n", d);
+//     if (result == expected)
+//         printf("%%s test passed\n");
+//     else
+//         printf("%%s test failed\n");
 
-    int hex = 42;
-    result = ft_printf("%x\n", hex);
-    expected = printf("%x\n", hex);
-    if (result == expected)
-        printf("%%s test passed\n");
-    else
-        printf("%%s test failed\n");
-}
-*/
+//     int hex = 42;
+//     result = ft_printf("%x\n", hex);
+//     expected = printf("%x\n", hex);
+//     if (result == expected)
+//         printf("%%s test passed\n");
+//     else
+//         printf("%%s test failed\n");
+// }
