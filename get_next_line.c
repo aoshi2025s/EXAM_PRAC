@@ -46,7 +46,7 @@ void ft_putc(t_line *line, char c)
 {
 	char  *new_str;
 
-	if (line->len + 1 > line->capa)
+	if (line->len + 1 >= line->capa)
 	{
 		line->capa = (line->len + 1) * 2;
 		new_str = (char *)malloc(sizeof(char) * line->capa);
@@ -79,7 +79,7 @@ char *get_next_line(int fd)
 			break;
 	}
 	if(line.len > 0)
-		ft_putc(&line, '\0');
+		ft_putc(&line, 0);
 	return (line.str);
 }
 
@@ -101,4 +101,3 @@ int main(void)
 	close(fd);
 	return (0);
 }
-
