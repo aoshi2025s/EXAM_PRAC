@@ -39,19 +39,7 @@ char ft_getc(int fd)
 		read_byte = read(fd, buff, BUFFER_SIZE);
 		buffptr = buff;
 	}
-	read_byte--;
-	if (read_byte >= 0)
-		return (*(buffptr++));
-	return (EOF);
-}
-
-char *ft_memcpy(void *dest, void *src, size_t len)
-{
-	unsigned char *d = (unsigned char *)dest;
-	unsigned char *s = (unsigned char *)src;
-	while (len--)
-		*d++ = *s++;
-	return ((char *)dest);
+	return ((--read_byte >= 0) ? (*buffptr++) : EOF);
 }
 
 void ft_putc(t_line *line, char c)
@@ -61,9 +49,13 @@ void ft_putc(t_line *line, char c)
 	if (line->len + 1 > line->capa)
 	{
 		line->capa = (line->len + 1) * 2;
-		new_str = (char *)malloc(sizeof(char) * ((line->len + 1) * 2));
-		ft_memcpy(new_str, line->str, line->len);
-		free (line->str);
+		new_str = (char *)malloc(sizeof(char) * line->capa);
+		size_t len = line->len;
+		char *src = line->str;
+		char *dest = new_str;
+		while (len--)
+			*dest++ = *src++;
+		free(line->str);
 		line->str = new_str;
 	}
 	line->str[line->len++] = c;
