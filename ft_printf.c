@@ -53,45 +53,46 @@ int ft_printf(const char *fmt, ...)
     return (va_end(ptr), len);
 }
 
-// #include <stdio.h>
-// #include <stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-// int main(void)
-// {
-//     char *str = "Hello, World!";
-//     char *str_null = NULL;
+int main(void)
+{
+    char *str = "Hello, World!";
+    char *str_null = NULL;
 
-//     int result;
-//     int expected;
+    int result;
+    int expected;
 
-//     result = ft_printf("%s\n",str);
-//     expected = printf("%s\n", str);
-//     if (result == expected)
-//         printf("%%s test passed\n");
-//     else
-//         printf("%%s test failed\n");
+    result = ft_printf("%s\n",str);
+    expected = printf("%s\n", str);
+    if (result == expected)
+        printf("\033[0;32m%%s test passed\033[0m\n");  // 緑色のテキスト
+    else
+        printf("\033[0;31m%%s test failed\033[0m\n");  // 赤色のテキスト
     
-//     result = ft_printf("%s\n",str_null);
-//     expected = printf("%s\n", str_null);
-//     if (result == expected)
-//         printf("%%s test passed\n");
-//     else
-//         printf("%%s test failed\n");
+    result = ft_printf("%s\n",str_null);
+    expected = printf("%s\n", str_null);
+    if (result == expected)
+        printf("\033[0;32m%%s_null test passed\033[0m\n");  // 緑色のテキスト
+    else
+        printf("\033[0;31m%%s_null test failed\033[0m\n");  // 赤色のテキスト
 
+    int d1 = 2147483647;
+    int d2 = -2147483648;
+    result = ft_printf("INT_MAX: %d, INT_MIN: %d\n", d1, d2);
+    expected = printf("INT_MAX: %d, INT_MIN: %d\n", d1, d2);
+    if (result == expected)
+        printf("\033[0;32m%%d test passed\033[0m\n");  // 緑色のテキスト
+    else
+        printf("\033[0;31m%%d test failed\033[0m\n");  // 赤色のテキスト
 
-//     int d = -214345868;
-//     result = ft_printf("%d\n", d);
-//     expected = printf("%d\n", d);
-//     if (result == expected)
-//         printf("%%s test passed\n");
-//     else
-//         printf("%%s test failed\n");
+    int hex = 42;
+    result = ft_printf("%x\n", hex);
+    expected = printf("%x\n", hex);
+    if (result == expected)
+        printf("\033[0;32m%%x test passed\033[0m\n");  // 緑色のテキスト
+    else
+        printf("\033[0;31m%%x test failed\033[0m\n");  // 赤色のテキスト
+}
 
-//     int hex = 42;
-//     result = ft_printf("%x\n", hex);
-//     expected = printf("%x\n", hex);
-//     if (result == expected)
-//         printf("%%s test passed\n");
-//     else
-//         printf("%%s test failed\n");
-// }
