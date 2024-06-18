@@ -17,10 +17,6 @@
 # define BUFFER_SIZE 100
 #endif
 
-#ifndef EOF
-# define EOF -42
-#endif
-
 typedef struct s_line
 {
 	char *str;
@@ -39,7 +35,7 @@ char ft_getc(int fd)
 		read_byte = read(fd, buff, BUFFER_SIZE);
 		buffptr = buff;
 	}
-	return ((--read_byte >= 0) ? (*buffptr++) : EOF);
+	return ((--read_byte >= 0) ? (*buffptr++) : -5);
 }
 
 void ft_putc(t_line *line, char c)
@@ -72,7 +68,7 @@ char *get_next_line(int fd)
 	while (1)
 	{
 		c = ft_getc(fd);
-		if (c == EOF)
+		if (c == -5)
 			break;
 		ft_putc(&line, c);
 		if (c == '\n')
